@@ -35,7 +35,7 @@
 
 ## 📦 Installation
 
-### 1. Clone the repository
+1. Clone the repository
 bash
 git clone https://github.com/Sairaj-25/yt-ai-blog.git
 cd yt-ai-blog
