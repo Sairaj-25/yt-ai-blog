@@ -1,0 +1,90 @@
+# ========================
+# Python
+# ========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.log
+
+# ========================
+# Virtual Environment
+# ========================
+.venv/
+venv/
+env/
+ENV/
+
+# ========================
+# Django
+# ========================
+*.sqlite3
+db.sqlite3
+local_settings.py
+settings_local.py
+
+# Django migrations (optional – keep if you want DB history)
+# */migrations/
+# !*/migrations/__init__.py
+
+# ========================
+# Environment Variables
+# ========================
+.env
+.env.*
+*.env
+
+# ========================
+# Media & Static Files
+# ========================
+media/
+staticfiles/
+
+# ========================
+# ffmpeg / yt-dlp outputs
+# ========================
+*.mp3
+*.wav
+*.webm
+*.m4a
+*.mp4
+
+# ========================
+# OS Files
+# ========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ========================
+# IDE / Editor
+# ========================
+.vscode/
+.idea/
+*.swp
+
+# ========================
+# Logs
+# ========================
+logs/
+*.log
+
+# ========================
+# Test & Coverage
+# ========================
+.coverage
+htmlcov/
+.pytest_cache/
+
+# ========================
+# Node (if frontend added later)
+# ========================
+node_modules/
+
+# ========================
+# Build / Dist
+# ========================
+build/
+dist/
+*.egg-info/
+
