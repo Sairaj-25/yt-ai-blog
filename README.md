@@ -52,15 +52,13 @@ Before you begin, ensure you have the following installed on your machine:
 ## 📦 Installation & Setup
 
 ### 1. Clone the repository
-```
-# bash
+```bash
 git clone [https://github.com/Sairaj-25/yt-ai-blog.git](https://github.com/Sairaj-25/yt-ai-blog.git)
 cd yt-ai-blog
 ```
 
 ### 2. Set up a Virtual Environment
-```
-# Bash
+```bash
 python -m venv .venv
 
 # Windows
@@ -72,38 +70,36 @@ source .venv/bin/activate
 
 ### 3. Install Dependencies
  
-# Bash
-```
+```bash
 pip install -r requirements.txt
 ```
 
 ### 4. Configure Environment Variables
-```
-Create a .env file in the root directory (alongside manage.py) and add your secret keys:
 
-Code snippet
+- Create a .env file in the root directory (alongside manage.py) and add your secret keys:
+  
+```Code snippet
 GEMINI_API_KEY="your_google_gemini_api_key_here"
 ASSEMBLYAI_API_KEY="your_assemblyai_api_key_here"
 DJANGO_SECRET_KEY="your_secure_django_secret_key_here"
 ```
 
 ### 5. Apply Database Migrations
-```
-Initialize the SQLite database and create the necessary tables for authentication and blog posts:
-
-# Bash
+- Initialize the SQLite database and create the necessary tables for authentication and blog posts:
+  
+```bash
 python manage.py makemigrations
 python manage.py migrate
 
 ```
 
 ### 6. Run the Development Server
-```
-Bash
+
+```bash
 python manage.py runserver
-Open your browser and navigate to: http://127.0.0.1:8000/
 
 ```
+- Open your browser and navigate to: http://127.0.0.1:8000/
 
 🧪 Usage Guide
 
@@ -132,11 +128,11 @@ yt-ai-blog/
 
 🤝 Contributing
 
+
+- Contributions, issues, and feature requests are welcome!
+
+- Fork the Project
 ```
-Contributions, issues, and feature requests are welcome!
-
-Fork the Project
-
 Create your Feature Branch (git checkout -b feature/AmazingFeature)
 
 Commit your Changes (git commit -m 'Add some AmazingFeature')
