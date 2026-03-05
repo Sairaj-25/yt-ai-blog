@@ -5,19 +5,19 @@
 ![Gemini AI](https://img.shields.io/badge/AI-Google_Gemini-orange)
 ![AssemblyAI](https://img.shields.io/badge/Speech_to_Text-AssemblyAI-blueviolet)
 
-<<<<<<< HEAD
+
 🎯 It combines:
 - YouTube audio extraction via `yt-dlp`
 - Speech-to-text transcription with AssemblyAI
 - AI blog generation using OpenAI’s advanced models
-=======
+
 **YT-AI-Blog** is a powerful Django-powered web application that takes a YouTube video URL, extracts and transcribes the audio, and leverages Google's Gemini AI to generate a professional, highly-structured blog article or study notes based on the video's content.
 
 🎯 **The Workflow:**
 1. **Extract:** Downloads high-quality audio from YouTube via `yt-dlp`.
 2. **Transcribe:** Converts speech to text accurately using AssemblyAI.
 3. **Generate:** Transforms the raw transcript into clean, readable blog content using the Gemini 2.5 Flash model.
->>>>>>> c11d7175c2d5b0c69c29db6af4658a9f9a4dafc6
+
 
 ---
 
@@ -34,37 +34,28 @@
 
 ## 🧠 Tech Stack
 
-<<<<<<< HEAD
-| Layer | Technology |
-|-------|------------|
-| Backend | Django |
-| YouTube Extraction | yt-dlp |
-| Transcription | AssemblyAI |
-| AI Content | OpenAI API |
-| Python Version | 3.9+ |
-| Database | Django ORM (SQLite default) |
-=======
 | Component | Technology |
 | :--- | :--- |
+| Python Version | 3.9+ |
 | **Backend Framework** | Django 5.2 |
 | **Video/Audio Downloader**| `yt-dlp` & `ffmpeg` |
 | **Speech-to-Text API** | AssemblyAI |
 | **Generative AI** | Google Gemini (`google-genai` SDK) |
 | **Frontend** | HTML5, Tailwind CSS, JavaScript |
 | **Database** | SQLite (Default Django ORM) |
->>>>>>> c11d7175c2d5b0c69c29db6af4658a9f9a4dafc6
 
 ---
 
 ## ⚙️ Prerequisites
 
-<<<<<<< HEAD
+
 ### 1. Clone the repository
 ```bash
 git clone https://github.com/Sairaj-25/yt-ai-blog.git
 cd yt-ai-blog
-=======
-Before you begin, ensure you have the following installed on your machine:
+```
+
+- Before you begin, ensure you have the following installed on your machine:
 - **Python 3.9+**
 - **FFmpeg**: Required by `yt-dlp` to extract and process the audio files.
   - *Windows*: Download from [gyan.dev](https://www.gyan.dev/ffmpeg/builds/) and add to your system PATH.
@@ -84,13 +75,11 @@ cd yt-ai-blog
 ### 2. Set up a Virtual Environment
 ```bash
 python -m venv .venv
-
-# Windows
-.venv\Scripts\activate
-
-# macOS / Linux
-source .venv/bin/activate
 ```
+
+-# Windows : `.venv\Scripts\activate`
+
+-# macOS / Linux : `source .venv/bin/activate`
 
 ### 3. Install Dependencies
  
@@ -171,4 +160,3 @@ Open a Pull Request
 ```
 https://github.com/Sairaj-25/yt-ai-blog
 ```
->>>>>>> c11d7175c2d5b0c69c29db6af4658a9f9a4dafc6
