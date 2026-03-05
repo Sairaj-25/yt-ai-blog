@@ -27,7 +27,6 @@ import assemblyai as aai
 from google import genai
 from google.genai import types
 
-
 # -----------------------------
 # GLOBAL CLIENT CONFIGURATION
 # -----------------------------
@@ -43,6 +42,7 @@ aai.settings.api_key = os.getenv("ASSEMBLYAI_API_KEY")
 # HOME PAGE VIEW
 # -----------------------------
 
+
 @login_required
 def index(request):
     return render(request, "index.html")
@@ -51,6 +51,7 @@ def index(request):
 # -----------------------------
 # MAIN BLOG GENERATION API
 # -----------------------------
+
 
 @csrf_exempt
 def generate_blog(request):
@@ -83,15 +84,13 @@ def generate_blog(request):
         return JsonResponse({"error": blog_content}, status=500)
 
     # Return generated content as JSON
-    return JsonResponse({
-        "title": title,
-        "content": blog_content
-    })
+    return JsonResponse({"title": title, "content": blog_content})
 
 
 # -----------------------------
 # HELPER FUNCTIONS
 # -----------------------------
+
 
 def yt_title(link):
     """Extracts the video title without downloading the video."""
@@ -110,11 +109,13 @@ def download_audio(link):
         ydl_opts = {
             "format": "bestaudio/best",
             "outtmpl": os.path.join(settings.MEDIA_ROOT, "%(title)s.%(ext)s"),
-            "postprocessors": [{
-                "key": "FFmpegExtractAudio",
-                "preferredcodec": "mp3",
-                "preferredquality": "192",
-            }],
+            "postprocessors": [
+                {
+                    "key": "FFmpegExtractAudio",
+                    "preferredcodec": "mp3",
+                    "preferredquality": "192",
+                }
+            ],
         }
         with YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(link, download=True)
@@ -186,13 +187,13 @@ Transcript:
 """
         # Call Gemini API using the new google-genai SDK
         response = gemini_client.models.generate_content(
-            model='gemini-2.5-flash',
+            model="gemini-2.5-flash",
             contents=prompt,
             config=types.GenerateContentConfig(
                 system_instruction="You are an expert blog writer.",
                 temperature=0.7,
-                max_output_tokens=8192, # Safe maximum limit
-            )
+                max_output_tokens=8192,  # Safe maximum limit
+            ),
         )
         return response.text.strip()
     except Exception as e:
@@ -204,33 +205,36 @@ Transcript:
 # AUTH FUNCTIONS
 # -----------------------------
 
+
 def user_login(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            return redirect('/')
-        return render(request, 'Login.html', {'error_message': 'Invalid credentials'})
-    return render(request, 'Login.html')
+            return redirect("/")
+        return render(request, "Login.html", {"error_message": "Invalid credentials"})
+    return render(request, "Login.html")
 
 
 def user_signup(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
-        repeatPassword = request.POST['repeatPassword']
+    if request.method == "POST":
+        username = request.POST["username"]
+        email = request.POST["email"]
+        password = request.POST["password"]
+        repeatPassword = request.POST["repeatPassword"]
 
         if password == repeatPassword:
             user = User.objects.create_user(username, email, password)
             login(request, user)
-            return redirect('/')
-        return render(request, 'signup.html', {'error_message': 'Passwords do not match'})
-    return render(request, 'signup.html')
+            return redirect("/")
+        return render(
+            request, "signup.html", {"error_message": "Passwords do not match"}
+        )
+    return render(request, "signup.html")
 
 
 def user_logout(request):
     logout(request)
-    return redirect('/')
+    return redirect("/")
