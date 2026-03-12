@@ -1,149 +1,227 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Blog Generator</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>YT-AI-Blog | Smart Video Notes</title>
     
-    <style>
-        @keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-            to { 
-                transform: rotate(360deg);
-            }
-        }
-         
-        
-         @-webkit-keyframes rotate {
-            from {
-                -webkit-transform: rotate(0deg);
-            }
-            to { 
-                -webkit-transform: rotate(360deg);
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8' },
+                    }
+                }
             }
         }
-        
-        .load {
-            width: 100px;
-            height: 100px;
-            margin: 110px auto 0;
-            border:solid 10px #8822aa;
-            border-radius: 50%;
-            border-right-color: transparent;
-            border-bottom-color: transparent;
-             -webkit-transition: all 0.5s ease-in;
-            -webkit-animation-name:             rotate; 
-            -webkit-animation-duration:         1.0s; 
-            -webkit-animation-iteration-count:  infinite;
-            -webkit-animation-timing-function: linear;
-                
-                 transition: all 0.5s ease-in;
-            animation-name:             rotate; 
-            animation-duration:         1.0s; 
-            animation-iteration-count:  infinite;
-            animation-timing-function: linear; 
-        }
-    </style>
-</head>
-<body class="flex-col min-h-screen bg-gray-100 font-sans antialised">
-    <!-- Navbar -->
-     <nav class="bg-blue-600 p-4 text-white flex justify-between">
-        <div>
-            <h1 class = "text-3xl font-bold">AI Blog Generator</h1>
-        </div>
-        <div class="align center">
-        
-            {% comment %} <a href="login" class="text-white hover:underline">Login</a> {% endcomment %}
-            <a href="#" class="text-white hover:underline mx-4">Welcome, {{ user.username }} !</a>
-            <br>
-            <a href="logout" class="m-10 text-white hover:underline">Logout</a>
-        
-        </div>
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased min-h-screen flex flex-col selection:bg-primary-100 selection:text-primary-700">
+
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <div class="bg-primary-600 text-white p-2 rounded-lg">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-indigo-600">
+                        YT-AI-Blog
+                    </span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    {% if user.is_authenticated %}
+                        <span class="text-sm text-slate-600 hidden sm:inline-block">Welcome, <span class="font-semibold text-slate-900">{{ user.username }}</span></span>
+                        <a href="{% url 'logout' %}" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Log out</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Log in</a>
+                        <a href="{% url 'signup' %}" class="text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 px-4 py-2 rounded-full shadow-sm transition-all hover:shadow-md">Sign up</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </nav>
 
-    
-    <!-- main -->
-    <div class="flex-grow container mx-auto mt-10 px-4 sm:px-0">
-        <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md transition-transform transform hover:scale-105 flex flex-col">
-            <!-- Introduction section -->
-            <div class="text-center">
-                <h2 class="text-2xl font-semibold mb-4">Welcome to AI BLog Generator</h2>
-                <p class="text-gray-700">
-                    Generate high-quality blog articles from Youtube Simply enter the link to the youtube video below and let the AI create the content for you!
-                </p>
-            </div>
+    <main class="flex-grow flex flex-col items-center pt-16 pb-12 px-4 sm:px-6">
+        
+        <div class="text-center max-w-3xl mx-auto mb-12 animate-fade-in-up">
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-6">
+                Turn YouTube Videos into <br class="hidden sm:block"/> 
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-purple-600">Smart Actionable Notes</span>
+            </h1>
+            <p class="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
+                Paste any YouTube link below. Our AI will automatically extract the audio, transcribe the speech, and generate a perfectly formatted blog post or study guide in seconds.
+            </p>
 
-            <br>
-
-            <!-- Youtube Section -->
-            <div>
-                <h2 class="text-xl mb-4 font-semibold">Enter Youtube Video Link </h2>
-                <div class="flex space-x-4">
-                    <input id="youtubeLink" type="url" placeholder="paste youtube link..." class="flex-grow p-2 border border-blue-400 rounded-md">
-                    <button id="generateBlogButton" class="bg-blue-600 text-white px-4 p-2 rounded-r-md hover:bg-blue-700 transition-colors">Generate</button>
+            <div class="max-w-2xl mx-auto relative group">
+                <div class="absolute inset-0 bg-gradient-to-r from-primary-500 to-purple-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-500"></div>
+                <div class="relative bg-white rounded-2xl shadow-xl flex items-center p-2 border border-slate-200">
+                    <div class="pl-4 pr-2 text-slate-400">
+                        <i class="fa-brands fa-youtube text-xl"></i>
+                    </div>
+                    <input id="youtubeLink" type="url" placeholder="https://www.youtube.com/watch?v=..." 
+                        class="flex-grow bg-transparent border-none outline-none text-slate-700 py-3 px-2 w-full placeholder-slate-400 focus:ring-0">
+                    <button id="generateBtn" class="bg-slate-900 text-white font-medium rounded-xl px-6 py-3 hover:bg-primary-600 transition-all shadow-sm flex items-center gap-2 flex-shrink-0 disabled:opacity-70 disabled:cursor-not-allowed">
+                        <span>Generate</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
                 </div>
             </div>
-
-            <!-- Section for loading circle-->
-            <div style="display: none;" id="loading-circle" class="load"></div>
-
-            <section class ="mt-10 flex-grow">
-            <!-- Generated blog display section -->
-                <h2 class="text-xl mb-4 font-semibold">Generated Blog Article</h2>
-                <div id="blogContent" class="mt-2 text-gray-700 space-y-4">
-                
-                </div>
-            </section>
-
+            <p id="errorMsg" class="text-red-500 text-sm mt-3 hidden font-medium"></p>
         </div>
-    </div>
 
-    <footer>
+        <div id="loadingState" class="hidden flex-col items-center justify-center py-12">
+            <div class="relative w-20 h-20">
+                <div class="absolute inset-0 border-4 border-slate-100 rounded-full"></div>
+                <div class="absolute inset-0 border-4 border-primary-600 rounded-full border-t-transparent animate-spin"></div>
+            </div>
+            <h3 class="mt-6 text-lg font-medium text-slate-900">Analyzing Video Content...</h3>
+            <p class="text-slate-500 text-sm mt-1 animate-pulse">Extracting audio, transcribing, and writing your notes.</p>
+        </div>
 
+        <div id="resultCard" class="hidden w-full max-w-4xl mx-auto mt-8 opacity-0 transition-opacity duration-500">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-slate-50 border-b border-slate-200 px-6 py-4 flex justify-between items-center">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <div class="bg-green-100 text-green-700 p-2 rounded-lg flex-shrink-0">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <h2 id="resultTitle" class="text-lg font-semibold text-slate-900 truncate">Generated Notes</h2>
+                    </div>
+                    
+                    <button id="copyBtn" class="text-slate-500 hover:text-primary-600 hover:bg-primary-50 px-3 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium border border-transparent hover:border-primary-200">
+                        <i class="fa-regular fa-copy"></i>
+                        <span id="copyText">Copy</span>
+                    </button>
+                </div>
+                
+                <div class="p-6 sm:p-8">
+                    <article id="blogContent" class="prose prose-slate prose-primary max-w-none prose-headings:font-semibold prose-a:text-primary-600 hover:prose-a:text-primary-500 prose-img:rounded-xl">
+                        </article>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 mt-auto">
+        <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-slate-500">
+            <p>&copy; 2026 YT-AI-Blog. All rights reserved.</p>
+            <p>Powered by Django, Gemini AI & AssemblyAI.</p>
+        </div>
     </footer>
 
     <script>
-        document.getElementById('generateBlogButton').addEventListener('click', async () => {
-            
+        const generateBtn = document.getElementById('generateBtn');
+        const youtubeLinkInput = document.getElementById('youtubeLink');
+        const errorMsg = document.getElementById('errorMsg');
+        const loadingState = document.getElementById('loadingState');
+        const resultCard = document.getElementById('resultCard');
+        const resultTitle = document.getElementById('resultTitle');
+        const blogContent = document.getElementById('blogContent');
+        const copyBtn = document.getElementById('copyBtn');
+        const copyText = document.getElementById('copyText');
 
-            const youtubeLink = document.getElementById('youtubeLink').value;
-            const blogContent = document.getElementById('blogContent');
-            
-            if(youtubeLink) {
-                document.getElementById('loading-circle').style.display = 'block';
-                
-                blogContent.innerHTML = ''; // Clear previous content
+        let rawMarkdown = "";
 
-                const endpointUrl = '/generate-blog/';
-                
-                try {
-                    const response = await fetch(endpointUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ link: youtubeLink }),
-                    });
-                
-                    if (response.ok) {
-                        const data = await response.json();
-                        blogContent.innerHTML = data.content;
-                    } else {
-                        const errorData = await response.json();
-                        blogContent.innerHTML = `<p class="text-red-500">${errorData.error || "An unexpected error occurred."}</p>`;
-                    }
-                } catch (error) {
-                    blogContent.innerHTML = `<p class="text-red-500">Error: Unable to connect to the server. Please try again later.</p>`;
-                    console.error("Error occurred:", error);
+        generateBtn.addEventListener('click', async () => {
+            const url = youtubeLinkInput.value.trim();
+            
+            // Basic validation
+            if (!url) {
+                showError("Please enter a valid YouTube link.");
+                return;
+            }
+            if (!url.includes("youtube.com") && !url.includes("youtu.be")) {
+                showError("Please enter a valid YouTube URL.");
+                return;
+            }
+
+            // Reset UI State
+            errorMsg.classList.add('hidden');
+            resultCard.classList.add('hidden');
+            resultCard.classList.remove('opacity-100');
+            
+            // Activate Loading State
+            loadingState.classList.remove('hidden');
+            loadingState.classList.add('flex');
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Processing`;
+
+            try {
+                const response = await fetch('/generate-blog/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ link: url }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Inject Data
+                    resultTitle.innerText = data.title || "Generated Blog Post";
+                    rawMarkdown = data.content;
+                    
+                    // Parse Markdown to HTML
+                    blogContent.innerHTML = marked.parse(rawMarkdown);
+                    
+                    // Toggle UI visibility
+                    loadingState.classList.add('hidden');
+                    loadingState.classList.remove('flex');
+                    resultCard.classList.remove('hidden');
+                    
+                    // Trigger fade-in transition
+                    setTimeout(() => {
+                        resultCard.classList.add('opacity-100');
+                        resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 50);
+
+                } else {
+                    showError(data.error || "An unexpected error occurred.");
                 }
+            } catch (error) {
+                console.error("Error:", error);
+                showError("Unable to connect to the server. Please check your connection.");
+            } finally {
+                // Restore button state
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = `<span>Generate</span><i class="fa-solid fa-arrow-right"></i>`;
+            }
+        });
+
+        function showError(message) {
+            loadingState.classList.add('hidden');
+            loadingState.classList.remove('flex');
+            errorMsg.innerText = message;
+            errorMsg.classList.remove('hidden');
+        }
+
+        // Copy to clipboard logic
+        copyBtn.addEventListener('click', async () => {
+            try {
+                // Try to copy the raw markdown text so it's clean for users to paste elsewhere
+                await navigator.clipboard.writeText(rawMarkdown);
                 
-                document.getElementById('loading-circle').style.display = 'none';
-            } else {
-                alert("Please enter a YouTube link.");
+                // Update Button UI
+                copyBtn.classList.add('text-green-600', 'bg-green-50', 'border-green-200');
+                copyText.innerText = 'Copied!';
+                copyBtn.querySelector('i').classList.replace('fa-copy', 'fa-check');
+
+                setTimeout(() => {
+                    copyBtn.classList.remove('text-green-600', 'bg-green-50', 'border-green-200');
+                    copyText.innerText = 'Copy';
+                    copyBtn.querySelector('i').classList.replace('fa-check', 'fa-copy');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                alert('Failed to copy to clipboard.');
             }
         });
     </script>
