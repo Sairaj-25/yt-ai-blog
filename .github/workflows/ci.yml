@@ -1,13 +1,12 @@
 name: YT-AI-Blog CI
 
-# Trigger the workflow on pushes and pull requests to the main branch
 on:
   push:
     branches: [ "main", "master" ]
   pull_request:
     branches: [ "main", "master" ]
 
-# Cancel in-progress runs if a new commit is pushed to the same PR
+# Cancels redundant in-progress runs on the same PR to save compute minutes
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -26,29 +25,31 @@ jobs:
           python-version: "3.11"
           cache: 'pip'
 
-      - name: Install Quality Tools
+      - name: Install Linting & Security Tools
         run: |
           python -m pip install --upgrade pip
-          pip install black flake8 bandit
+          pip install ruff bandit
 
-      - name: Check Code Formatting (Black)
-        # Your requirements.txt already includes black, ensuring consistent formatting
-        run: black --check .
-
-      - name: Lint Code (Flake8)
-        # Stops the build if there are Python syntax errors or undefined names
-        run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+      - name: Format & Lint Code (Ruff)
+        # Ruff replaces Black, Flake8, and isort. It is 10-100x faster.
+        run: |
+          ruff format --check .
+          ruff check .
 
       - name: Security Scan (Bandit)
-        # Scans for common security issues in Python code
         run: bandit -r . -ll -ii -x "venv,env,tests"
 
   test:
-    name: Run Django Tests
+    name: Run Django Tests (Python ${{ matrix.python-version }})
     needs: lint-and-security
     runs-on: ubuntu-latest
     
-    # Provide dummy environment variables for CI environment
+    # Run tests on multiple Python versions to guarantee compatibility
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
+      fail-fast: false
+    
     env:
       DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY || 'ci-dummy-django-secret-key' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || 'ci-dummy-gemini-key' }}
@@ -59,15 +60,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install System Dependencies (FFmpeg)
-        # FFmpeg is required by yt-dlp to extract and process audio files
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
 
-      - name: Set up Python
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: ${{ matrix.python-version }}
           cache: 'pip'
 
       - name: Install Python Dependencies
@@ -77,17 +77,17 @@ jobs:
           pip install coverage
 
       - name: Check Database Migrations
-        # Ensures no missing migrations are pushed to the repository
         run: python manage.py makemigrations --check --dry-run
 
       - name: Run Tests with Coverage
-        # Executes your Django test suite and records code coverage
         run: |
           coverage run manage.py test
           coverage report -m
           coverage xml
 
       - name: Upload Coverage Report
+        # Only upload coverage once (from the 3.11 run) to avoid clutter
+        if: matrix.python-version == '3.11'
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
