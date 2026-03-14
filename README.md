@@ -1,6 +1,6 @@
 # 📝 YT-AI-Blog: YouTube to AI Blog Generator
 
-![Python Version](https://img.shields.io/badge/python-3.9%2B-blue)
+![Python Version](https://img.shields.io/badge/python-3.10%2B-blue)
 ![Django Version](https://img.shields.io/badge/django-5.2-green)
 ![Gemini AI](https://img.shields.io/badge/AI-Google_Gemini-orange)
 ![AssemblyAI](https://img.shields.io/badge/Speech_to_Text-AssemblyAI-blueviolet)
@@ -36,7 +36,7 @@
 
 | Component | Technology |
 | :--- | :--- |
-| Python Version | 3.9+ |
+| Python Version | 3.10+ |
 | **Backend Framework** | Django 5.2 |
 | **Video/Audio Downloader**| `yt-dlp` & `ffmpeg` |
 | **Speech-to-Text API** | AssemblyAI |
@@ -56,7 +56,7 @@ cd yt-ai-blog
 ```
 
 - Before you begin, ensure you have the following installed on your machine:
-- **Python 3.9+**
+- **Python 3.10+**
 - **FFmpeg**: Required by `yt-dlp` to extract and process the audio files.
   - *Windows*: Download from [gyan.dev](https://www.gyan.dev/ffmpeg/builds/) and add to your system PATH.
   - *Mac*: `brew install ffmpeg`
