@@ -82,7 +82,7 @@ def generate_blog(request):
         return JsonResponse({"error": blog_content}, status=500)
 
     # Save to datbase
-    new_blog = BlogPost.objects.create(
+    BlogPost.objects.create(
         user=request.user, youtube_link=yt_link, title=title, content=blog_content
     )
 
