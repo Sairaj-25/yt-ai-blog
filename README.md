@@ -180,8 +180,77 @@ Contributions are welcome! Feel free to fork this repository and submit pull req
 
 ## 📧 Contact & Support
 
-For questions or support, please open an issue on this repository or reach out through the contact channels in your profile.
+---
+
+## 🖼️ Application Preview
+
+> A visual walkthrough of **YT-AI-Notes** — from login to AI-generated output.
 
 ---
 
-**Built with ❤️ using Django, AI, and the power of YouTube learning.**
+### 🔐 Phase 1 — Authentication
+
+> Users must log in (or sign up) before accessing the notes generator. The navbar provides quick links to **Login** and **Signup**.
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="README_images/login.png" alt="Login Page" width="60%" />
+      <br/>
+      <b>🔑 Login Page</b>
+      <br/>
+      <sub>Username + password form · Navbar with Login / Signup links</sub>
+    </td>
+  </tr>
+</table>
+
+---
+
+### 🏠 Phase 2 — Dashboard & URL Input
+
+> After logging in, users land on the **dashboard**. They paste a YouTube URL into the input field and hit **Generate →** to kick off the pipeline.
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="README_images/Home1.png" alt="Dashboard – Empty State" width="100%" />
+      <br/>
+      <b>🏠 Dashboard – Ready State</b>
+      <br/>
+      <sub>YouTube URL input field · "Generate →" button · Welcome message with user email</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="README_images/home2.png" alt="Dashboard – Processing State" width="100%" />
+      <br/>
+      <b>⏳ Processing – Analyzing Video Content</b>
+      <br/>
+      <sub>Spinner animation · Status: "Extracting audio, transcribing, and writing your notes."</sub>
+    </td>
+  </tr>
+</table>
+
+---
+
+### 📄 Phase 3 — AI-Generated Notes Output
+
+> Once the pipeline completes, the fully structured AI notes appear inline — with a title pulled from the video, rich formatting (headings, bullet points, bold key terms), and a one-click **Copy** button.
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="README_images/output.png" alt="AI-Generated Notes Output" width="60%" />
+      <br/>
+      <b>📝 AI-Generated Notes</b>
+      <br/>
+      <sub>Structured headings · Bullet-point summaries · Bold key terms · Copy-to-clipboard button</sub>
+    </td>
+  </tr>
+</table>
+
+---
+
+## 👨‍💻 Author
+
+**Sairaj Jadhav**
+
+---
